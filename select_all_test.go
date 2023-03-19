@@ -1,19 +1,24 @@
 package database
 
 import (
+	"database/sql"
 	"github.com/oleksiivelychko/go-microservice/api"
-	"github.com/oleksiivelychko/go-utils/mysql_connection"
+	"github.com/oleksiivelychko/go-utils/connection_mysql"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestDatabase_SelectAllProduct(t *testing.T) {
-	mySQLConn, err := mysql_connection.NewMySQLConnection("gouser", "secret", "go_microservice")
+	connectionMySQL, err := connection_mysql.NewConnectionMySQL(
+		"gouser",
+		"secret",
+		"go_microservice",
+	)
 	if err != nil {
 		t.Error(err)
 	}
 
-	results, err := mySQLConn.SelectAll("products")
+	results, err := connectionMySQL.SelectAll("products")
 	if err != nil {
 		t.Error(err)
 	}
@@ -42,6 +47,11 @@ func TestDatabase_SelectAllProduct(t *testing.T) {
 	assert.Equal(t, products[1].SKU, "000-000-001")
 	assert.NotEmpty(t, products[1].UpdatedAt)
 
-	defer results.Close()
-	defer mySQLConn.Close()
+	defer func(results *sql.Rows) {
+		_ = results.Close()
+	}(results)
+
+	defer func(connectionMySQL *connection_mysql.ConnectionMySQL) {
+		_ = connectionMySQL.Close()
+	}(connectionMySQL)
 }
