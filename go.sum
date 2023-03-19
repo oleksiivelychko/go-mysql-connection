@@ -30,8 +30,8 @@ github.com/mattn/go-isatty v0.0.17 h1:BTarxUcIeDqL27Mc+vyvdWYSL28zpIhv3RoTdsLMPn
 github.com/mattn/go-isatty v0.0.17/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/yFXSvRLM=
 github.com/oleksiivelychko/go-microservice v1.0.7 h1:2slFa6NkL6Ji9wSBA4Jw/Paltf4vY7LreUXdpATlyW4=
 github.com/oleksiivelychko/go-microservice v1.0.7/go.mod h1:YpiEr4EOrjGhxxhRP6CtSffi22ekawMyrH3qtwy1svA=
-github.com/oleksiivelychko/go-utils v1.1.3 h1:ICyp52sxfhbNVaRPym+XL50bzhD5n4yZxtKWUE09Hr0=
-github.com/oleksiivelychko/go-utils v1.1.3/go.mod h1:HnSb4+kHxhwmvNFqSunJO1Zk1Jo3IqQOFgFYu7MyPQs=
+github.com/oleksiivelychko/go-utils v1.1.4 h1:Kp0rZYcKQhCI0xGnrzsCPTxY9k7vEH0kRuBREDPBLxY=
+github.com/oleksiivelychko/go-utils v1.1.4/go.mod h1:HnSb4+kHxhwmvNFqSunJO1Zk1Jo3IqQOFgFYu7MyPQs=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/rogpeppe/go-internal v1.8.0 h1:FCbCCtXNOY3UtUuHUYaghJg4y7Fd14rXifAYUAtL9R8=

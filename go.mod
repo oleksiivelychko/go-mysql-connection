@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/oleksiivelychko/go-microservice v1.0.7
-	github.com/oleksiivelychko/go-utils v1.1.3
+	github.com/oleksiivelychko/go-utils v1.1.4
 	github.com/stretchr/testify v1.8.2
 )
 
