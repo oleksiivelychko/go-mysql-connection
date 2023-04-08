@@ -1,3 +1,3 @@
 # go-mysql-connection
 
-### Make the MySQL connection and test that. That's all.
+### Make MySQL connection and test CRUD actions.
