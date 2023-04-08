@@ -7,10 +7,10 @@ github.com/go-playground/validator/v10 v10.12.0 h1:E4gtWgxWxp8YSxExrQFv5BpCahla0
 github.com/go-sql-driver/mysql v1.7.0 h1:ueSltNNllEqE3qcWBTD0iQd3IpL/6U+mJxLkazJ7YPc=
 github.com/go-sql-driver/mysql v1.7.0/go.mod h1:OXbVy3sEdcQ2Doequ6Z5BW6fXNQTmx+9S1MCJN5yJMI=
 github.com/leodido/go-urn v1.2.3 h1:6BE2vPT0lqoz3fmOesHZiaiFh7889ssCo2GMvLCfiuA=
-github.com/oleksiivelychko/go-microservice v1.3.2 h1:vHcOJvgvQw6AvnUIj/cgnhqgMPQxdSFu5NsVbtZtMP0=
-github.com/oleksiivelychko/go-microservice v1.3.2/go.mod h1:Jbs6KwGhBNofPiN7Xv9B7byoj2+OMtBXiDoq13xRBIA=
-github.com/oleksiivelychko/go-utils v1.3.13 h1:sttgg/1KMVjypvuZ3hpoutFc5NHBD+q+LBwLcsRI8uw=
-github.com/oleksiivelychko/go-utils v1.3.13/go.mod h1:M0UZ3KDL8NgQL9d/YjINBbLRP4G4MRwoxcA7GYkrkzM=
+github.com/oleksiivelychko/go-microservice v1.3.3 h1:IL5a4U6w8SqPmUEBN8Bqx/e/xbkmXb01NNFj3B1I2qM=
+github.com/oleksiivelychko/go-microservice v1.3.3/go.mod h1:QK1+Q0NcArNCgfAGZC1fR3pt7ypx6GyewpJyPSCSwfk=
+github.com/oleksiivelychko/go-utils v1.3.14 h1:9G8zSsYBpJByF+KSFstKyQDF5yvckZDezQTF9DPhk4A=
+github.com/oleksiivelychko/go-utils v1.3.14/go.mod h1:M0UZ3KDL8NgQL9d/YjINBbLRP4G4MRwoxcA7GYkrkzM=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

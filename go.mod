@@ -3,8 +3,8 @@ module github.com/oleksiivelychko/go-mysql-connection
 go 1.20
 
 require (
-	github.com/oleksiivelychko/go-microservice v1.3.2
-	github.com/oleksiivelychko/go-utils v1.3.13
+	github.com/oleksiivelychko/go-microservice v1.3.3
+	github.com/oleksiivelychko/go-utils v1.3.14
 	github.com/stretchr/testify v1.8.2
 )
 
