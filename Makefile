@@ -5,7 +5,7 @@ docker-volume:
 	docker volume inspect mysql-data >/dev/null 2>&1 || docker volume create mysql-data
 
 mysql-client-run: docker-network
-	docker run -it --network go-network mysql:8.0.31 mysql -hmysql-server -uroot -p
+	docker run -it --network go-network mysql:8.0 mysql -hmysql-server -uroot -p
 
 mysql-server-run: docker-network docker-volume
 	docker run --name mysql-server \
