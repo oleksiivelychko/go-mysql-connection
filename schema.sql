@@ -1,6 +1,7 @@
 USE mysql;
 
-CREATE DATABASE IF NOT EXISTS go_microservice;
+DROP DATABASE IF EXISTS go_microservice;
+CREATE DATABASE go_microservice;
 
 DROP USER IF EXISTS 'gouser'@'%';
 CREATE USER IF NOT EXISTS 'gouser'@'%';
