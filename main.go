@@ -1,12 +1,23 @@
 package main
 
-import "github.com/oleksiivelychko/go-utils/database"
+import (
+	"github.com/oleksiivelychko/go-mysql-connection/connection"
+	"github.com/oleksiivelychko/go-mysql-connection/querybuilder"
+)
 
-func createQueryBuilder() *database.QueryBuilder {
-	connection, err := database.NewConnection(&database.Params{
+type Product struct {
+	ID        int
+	Name      string
+	Price     float64
+	SKU       string
+	UpdatedAt string
+}
+
+func makeQueryBuilderMySQL() *querybuilder.Builder {
+	conn, err := connection.New(&connection.Params{
 		Username:     "gouser",
 		Password:     "secret",
-		DatabaseName: "go_microservice",
+		DatabaseName: "go_mysql_connection",
 		DriverName:   "mysql",
 	})
 
@@ -14,7 +25,5 @@ func createQueryBuilder() *database.QueryBuilder {
 		panic(err)
 	}
 
-	return &database.QueryBuilder{
-		Connection: connection,
-	}
+	return querybuilder.New(conn)
 }
