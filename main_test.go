@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 func TestFindAll(t *testing.T) {
@@ -33,11 +34,21 @@ func TestFindAll(t *testing.T) {
 	assert.Equal(t, products[0].SKU, "123-456-789")
 	assert.NotEmpty(t, products[0].UpdatedAt)
 
+	_, err = time.Parse(time.DateTime, products[0].UpdatedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	assert.Equal(t, products[1].ID, 2)
 	assert.Equal(t, products[1].Name, "Espresso")
 	assert.Equal(t, products[1].Price, 0.99)
 	assert.Equal(t, products[1].SKU, "000-000-001")
 	assert.NotEmpty(t, products[1].UpdatedAt)
+
+	_, err = time.Parse(time.DateTime, products[1].UpdatedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	defer func(results *sql.Rows) {
 		_ = results.Close()
