@@ -2,23 +2,22 @@ package main
 
 import (
 	"database/sql"
-	"github.com/oleksiivelychko/go-microservice/api"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestFindAll(t *testing.T) {
-	queryBuilder := createQueryBuilder()
+	queryBuilder := makeQueryBuilderMySQL()
 
 	results, err := queryBuilder.FindAll("products")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var products []*api.Product
+	var products []*Product
 
 	for results.Next() {
-		var product api.Product
+		var product Product
 
 		err = results.Scan(&product.ID, &product.Name, &product.Price, &product.SKU, &product.UpdatedAt)
 		if err != nil {
@@ -51,14 +50,14 @@ func TestFindAll(t *testing.T) {
 }
 
 func TestFindOne(t *testing.T) {
-	queryBuilder := createQueryBuilder()
+	queryBuilder := makeQueryBuilderMySQL()
 
 	result, err := queryBuilder.FindOne("products", 1)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var product api.Product
+	var product Product
 
 	err = result.Scan(&product.ID, &product.Name, &product.Price, &product.SKU, &product.UpdatedAt)
 	if err != nil {
@@ -78,7 +77,7 @@ func TestFindOne(t *testing.T) {
 }
 
 func TestInsert(t *testing.T) {
-	queryBuilder := createQueryBuilder()
+	queryBuilder := makeQueryBuilderMySQL()
 
 	lastInsertID, err := queryBuilder.Insert("products", map[string]string{
 		"name":  "Coffee",
@@ -96,7 +95,7 @@ func TestInsert(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	queryBuilder := createQueryBuilder()
+	queryBuilder := makeQueryBuilderMySQL()
 
 	rowsAffected, err := queryBuilder.Update("products", 3, map[string]string{
 		"name":  "Tea",
@@ -114,7 +113,7 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	queryBuilder := createQueryBuilder()
+	queryBuilder := makeQueryBuilderMySQL()
 
 	rowsAffected, err := queryBuilder.Delete("products", 3)
 	if err != nil {
