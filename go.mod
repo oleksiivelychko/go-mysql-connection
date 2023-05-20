@@ -3,7 +3,7 @@ module github.com/oleksiivelychko/go-mysql-connection
 go 1.20
 
 require (
-	github.com/go-sql-driver/mysql v1.7.0
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/stretchr/testify v1.8.2
 )
 
