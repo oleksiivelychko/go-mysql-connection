@@ -1,3 +1,3 @@
 # go-mysql-connection
 
-### Make MySQL connection and test CRUD actions using query builder.
+### Create MySQL connection and test CRUD actions via query builder.
