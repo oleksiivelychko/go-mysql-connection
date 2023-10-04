@@ -11,7 +11,7 @@ import (
 const defaultMaxLifetime = 2
 const defaultMaxOpenConnections = 5
 const defaultMaxIdleConnections = 5
-const defaultContextTimeout = 10
+const defaultContextTimeout = 5
 
 type Params struct {
 	Username              string
