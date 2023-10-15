@@ -8,7 +8,7 @@ import (
 func TestConnection_Successful(t *testing.T) {
 	conn, err := New(&Params{Username: "test", Password: "test", DatabaseName: "test", DriverName: "mysql"})
 	if conn == nil {
-		t.Fatal(err.Error())
+		t.Error(err.Error())
 	}
 }
 
@@ -27,14 +27,14 @@ func TestConnection_Close(t *testing.T) {
 	conn, _ := New(&Params{Username: "test", Password: "test", DatabaseName: "test", DriverName: "mysql"})
 	err := conn.Close()
 	if err != nil {
-		t.Fatal(err.Error())
+		t.Error(err.Error())
 	}
 }
 
 func TestConnection_DriverFactoryFailed(t *testing.T) {
 	_, err := New(&Params{Username: "test", Password: "test", DatabaseName: "test", DriverName: ""})
 	if err == nil {
-		t.Fatal("unable to open connection, driver name is not provided")
+		t.Error("unable to open connection, driver name is not provided")
 	}
 }
 
