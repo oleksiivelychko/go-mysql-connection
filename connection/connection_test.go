@@ -6,64 +6,64 @@ import (
 )
 
 func TestConnection_Successful(t *testing.T) {
-	conn, err := New(&Params{Username: "test", Password: "test", DatabaseName: "test", DriverName: "mysql"})
-	if conn == nil {
-		t.Error(err.Error())
+	c, err := New(&Params{Username: "test", Password: "test", Database: "test", Driver: "mysql"})
+	if c == nil {
+		t.Error(err)
 	}
 }
 
 func TestConnection_Failed(t *testing.T) {
-	conn, _ := New(&Params{Username: "", Password: "", DatabaseName: "", DriverName: "mysql"})
-	ping := conn.DB.Ping()
+	c, _ := New(&Params{Username: "", Password: "", Database: "", Driver: "mysql"})
+	ping := c.DB.Ping()
 
 	if ping.Error() == "" {
-		t.Fatal("unable to check connection")
+		t.Fatal("unable to ping connection")
 	}
 
 	t.Log(ping.Error())
 }
 
-func TestConnection_Close(t *testing.T) {
-	conn, _ := New(&Params{Username: "test", Password: "test", DatabaseName: "test", DriverName: "mysql"})
-	err := conn.Close()
+func TestConnection_Closed(t *testing.T) {
+	c, _ := New(&Params{Username: "test", Password: "test", Database: "test", Driver: "mysql"})
+	err := c.Close()
 	if err != nil {
 		t.Error(err.Error())
 	}
 }
 
-func TestConnection_DriverFactoryFailed(t *testing.T) {
-	_, err := New(&Params{Username: "test", Password: "test", DatabaseName: "test", DriverName: ""})
+func TestConnection_DriverMissed(t *testing.T) {
+	_, err := New(&Params{Username: "test", Password: "test", Database: "test", Driver: ""})
 	if err == nil {
-		t.Error("unable to open connection, driver name is not provided")
+		t.Error("connection should not have been open, driver name was not specified")
 	}
 }
 
 func TestConnection_DefaultParams(t *testing.T) {
-	conn, _ := New(&Params{Username: "test", Password: "test", DatabaseName: "test", DriverName: "mysql"})
+	c, _ := New(&Params{Username: "test", Password: "test", Database: "test", Driver: "mysql"})
 
-	if conn.Params.MaxLifetimeMinutes != time.Minute*defaultMaxLifetime {
+	if c.Params.MaxLifetimeMinutes != time.Minute*maxLifetime {
 		t.Error("unable to assign default value to MaxLifetimeMinutes")
 	}
 
-	if conn.Params.MaxOpenConnections != defaultMaxOpenConnections {
+	if c.Params.MaxOpenConnections != maxOpenConnections {
 		t.Error("unable to assign default value to MaxOpenConnections")
 	}
 
-	if conn.Params.MaxIdleConnections != defaultMaxIdleConnections {
+	if c.Params.MaxIdleConnections != maxIdleConnections {
 		t.Error("unable to assign default value to MaxIdleConnections")
 	}
 
-	if conn.Params.ContextTimeoutSeconds != time.Second*defaultContextTimeout {
+	if c.Params.ContextTimeoutSeconds != time.Second*contextTimeout {
 		t.Error("unable to assign default value to ContextTimeoutSeconds")
 	}
 }
 
 func TestConnection_Params(t *testing.T) {
-	conn, _ := New(&Params{
+	c, _ := New(&Params{
 		Username:              "test",
 		Password:              "test",
-		DatabaseName:          "test",
-		DriverName:            "mysql",
+		Database:              "test",
+		Driver:                "mysql",
 		MaxLifetimeMinutes:    1,
 		MaxOpenConnections:    1,
 		MaxIdleConnections:    1,
@@ -71,20 +71,20 @@ func TestConnection_Params(t *testing.T) {
 	})
 
 	// compare to 1 second
-	if conn.Params.MaxLifetimeMinutes/60 != 1000000000 {
+	if c.Params.MaxLifetimeMinutes/60 != 1000000000 {
 		t.Error("unable to assign value to MaxLifetimeMinutes")
 	}
 
-	if conn.Params.MaxOpenConnections != 1 {
+	if c.Params.MaxOpenConnections != 1 {
 		t.Error("unable to assign value to MaxOpenConnections")
 	}
 
-	if conn.Params.MaxIdleConnections != 1 {
+	if c.Params.MaxIdleConnections != 1 {
 		t.Error("unable to assign value to MaxIdleConnections")
 	}
 
 	// compare to 1 second
-	if conn.Params.ContextTimeoutSeconds != 1000000000 {
+	if c.Params.ContextTimeoutSeconds != 1000000000 {
 		t.Error("unable to assign value to ContextTimeoutSeconds")
 	}
 }

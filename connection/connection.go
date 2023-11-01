@@ -8,16 +8,18 @@ import (
 	"time"
 )
 
-const defaultMaxLifetime = 2
-const defaultMaxOpenConnections = 5
-const defaultMaxIdleConnections = 5
-const defaultContextTimeout = 5
+const (
+	maxLifetime        = 2
+	maxOpenConnections = 5
+	maxIdleConnections = 5
+	contextTimeout     = 5
+)
 
 type Params struct {
 	Username              string
 	Password              string
-	DatabaseName          string
-	DriverName            string
+	Database              string
+	Driver                string
 	MaxLifetimeMinutes    time.Duration
 	MaxOpenConnections    int
 	MaxIdleConnections    int
@@ -29,30 +31,30 @@ type Connection struct {
 	DB     *sql.DB
 }
 
-func New(params *Params) (*Connection, error) {
-	db, err := driverFactory(params)
+func New(p *Params) (*Connection, error) {
+	db, err := p.db()
 	if err != nil {
 		return nil, err
 	}
 
-	if params.MaxLifetimeMinutes == 0 {
-		params.MaxLifetimeMinutes = time.Minute * defaultMaxLifetime
+	if p.MaxLifetimeMinutes == 0 {
+		p.MaxLifetimeMinutes = time.Minute * maxLifetime
 	} else {
-		params.MaxLifetimeMinutes = time.Minute * params.MaxLifetimeMinutes
+		p.MaxLifetimeMinutes = time.Minute * p.MaxLifetimeMinutes
 	}
 
-	if params.MaxOpenConnections == 0 {
-		params.MaxOpenConnections = defaultMaxOpenConnections
+	if p.MaxOpenConnections == 0 {
+		p.MaxOpenConnections = maxOpenConnections
 	}
 
-	if params.MaxIdleConnections == 0 {
-		params.MaxIdleConnections = defaultMaxIdleConnections
+	if p.MaxIdleConnections == 0 {
+		p.MaxIdleConnections = maxIdleConnections
 	}
 
-	if params.ContextTimeoutSeconds == 0 {
-		params.ContextTimeoutSeconds = time.Second * defaultContextTimeout
+	if p.ContextTimeoutSeconds == 0 {
+		p.ContextTimeoutSeconds = time.Second * contextTimeout
 	} else {
-		params.ContextTimeoutSeconds = time.Second * params.ContextTimeoutSeconds
+		p.ContextTimeoutSeconds = time.Second * p.ContextTimeoutSeconds
 	}
 
 	/*
@@ -60,36 +62,36 @@ func New(params *Params) (*Connection, error) {
 		Since some middlewares close idle connections by 5 minutes, we recommend timeout shorter than 5 minutes.
 		This setting helps load balancing and changing system variables too.
 	*/
-	db.SetConnMaxLifetime(params.MaxLifetimeMinutes)
+	db.SetConnMaxLifetime(p.MaxLifetimeMinutes)
 	/*
 		It's highly recommended to limit the number of Connection used by the application.
 		There is no recommended limit number because it depends on application and MySQL server.
 	*/
-	db.SetMaxOpenConns(params.MaxOpenConnections)
+	db.SetMaxOpenConns(p.MaxOpenConnections)
 	/*
 		It's recommended to be set same to db.SetMaxOpenConns().
 		When it is smaller than SetMaxOpenConns(), connections can be opened and closed much more frequently than you expect.
 		Idle connections can be closed by the db.SetConnMaxLifetime().
 		If you want to close idle connections more rapidly, you can use db.SetConnMaxIdleTime() since Go 1.15.
 	*/
-	db.SetMaxIdleConns(params.MaxIdleConnections)
+	db.SetMaxIdleConns(p.MaxIdleConnections)
 
-	return &Connection{DB: db, Params: params}, nil
+	return &Connection{p, db}, nil
 }
 
-func (conn *Connection) Close() error {
-	return conn.DB.Close()
+func (c *Connection) Close() error {
+	return c.DB.Close()
 }
 
-func (conn *Connection) ContextTimeout() (context.Context, context.CancelFunc) {
-	return context.WithTimeout(context.Background(), conn.Params.ContextTimeoutSeconds)
+func (c *Connection) ContextTimeout() (context.Context, context.CancelFunc) {
+	return context.WithTimeout(context.Background(), c.Params.ContextTimeoutSeconds)
 }
 
-func driverFactory(params *Params) (*sql.DB, error) {
-	switch params.DriverName {
+func (p Params) db() (*sql.DB, error) {
+	switch p.Driver {
 	case "mysql":
-		return sql.Open(params.DriverName, fmt.Sprintf("%s:%s@/%s", params.Username, params.Password, params.DatabaseName))
+		return sql.Open(p.Driver, fmt.Sprintf("%s:%s@/%s", p.Username, p.Password, p.Database))
 	}
 
-	return nil, fmt.Errorf("unable to open connection, driver name is not provided")
+	return nil, fmt.Errorf("driver %s is not supported", p.Driver)
 }
