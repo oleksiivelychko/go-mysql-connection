@@ -6,19 +6,13 @@ import (
 )
 
 func TestQueryBuilder_New(t *testing.T) {
-	conn, err := connection.New(&connection.Params{
-		Username:     "test",
-		Password:     "test",
-		DatabaseName: "test",
-		DriverName:   "mysql",
-	})
-
-	if conn == nil {
+	c, err := connection.New(&connection.Params{Username: "test", Password: "test", Database: "test", Driver: "mysql"})
+	if c == nil {
 		t.Fatal(err.Error())
 	}
 
-	queryBuilder := New(conn)
-	if queryBuilder.db() == nil {
+	qb := New(c)
+	if qb.db() == nil {
 		t.Error("unable to create query builder")
 	}
 }
