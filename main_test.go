@@ -7,25 +7,27 @@ import (
 	"time"
 )
 
-func TestFindAll(t *testing.T) {
-	queryBuilder := makeQueryBuilderMySQL()
+const table = "products"
 
-	results, err := queryBuilder.FindAll("products")
+func TestFindAll(t *testing.T) {
+	qb := newQueryBuilderMySQL()
+
+	rows, err := qb.FindAll(table)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var products []*Product
+	var products []*product
 
-	for results.Next() {
-		var product Product
+	for rows.Next() {
+		var p product
 
-		err = results.Scan(&product.ID, &product.Name, &product.Price, &product.SKU, &product.UpdatedAt)
+		err = rows.Scan(&p.ID, &p.Name, &p.Price, &p.SKU, &p.UpdatedAt)
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		products = append(products, &product)
+		products = append(products, &p)
 	}
 
 	assert.Equal(t, products[0].ID, 1)
@@ -50,47 +52,45 @@ func TestFindAll(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	defer func(results *sql.Rows) {
-		_ = results.Close()
-	}(results)
+	defer func(r *sql.Rows) { _ = r.Close() }(rows)
 
-	err = queryBuilder.Connection.Close()
+	err = qb.Connection.Close()
 	if err != nil {
 		t.Error(err)
 	}
 }
 
 func TestFindOne(t *testing.T) {
-	queryBuilder := makeQueryBuilderMySQL()
+	qb := newQueryBuilderMySQL()
 
-	result, err := queryBuilder.FindOne("products", 1)
+	row, err := qb.FindOne(table, 1)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var product Product
+	var p product
 
-	err = result.Scan(&product.ID, &product.Name, &product.Price, &product.SKU, &product.UpdatedAt)
+	err = row.Scan(&p.ID, &p.Name, &p.Price, &p.SKU, &p.UpdatedAt)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, product.ID, 1)
-	assert.Equal(t, product.Name, "Latte")
-	assert.Equal(t, product.Price, 1.49)
-	assert.Equal(t, product.SKU, "123-456-789")
-	assert.NotEmpty(t, product.UpdatedAt)
+	assert.Equal(t, p.ID, 1)
+	assert.Equal(t, p.Name, "Latte")
+	assert.Equal(t, p.Price, 1.49)
+	assert.Equal(t, p.SKU, "123-456-789")
+	assert.NotEmpty(t, p.UpdatedAt)
 
-	err = queryBuilder.Connection.Close()
+	err = qb.Connection.Close()
 	if err != nil {
 		t.Error(err)
 	}
 }
 
 func TestInsert(t *testing.T) {
-	queryBuilder := makeQueryBuilderMySQL()
+	qb := newQueryBuilderMySQL()
 
-	lastInsertID, err := queryBuilder.Insert("products", map[string]string{
+	id, err := qb.Insert(table, map[string]string{
 		"name":  "Coffee",
 		"price": "0.49",
 		"SKU":   "123-000-000",
@@ -100,15 +100,15 @@ func TestInsert(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if lastInsertID < 0 {
-		t.Errorf("unable to insert data, got negative %d", lastInsertID)
+	if id < 0 {
+		t.Errorf("unable to insert data, got negative %d", id)
 	}
 }
 
 func TestUpdate(t *testing.T) {
-	queryBuilder := makeQueryBuilderMySQL()
+	qb := newQueryBuilderMySQL()
 
-	rowsAffected, err := queryBuilder.Update("products", 3, map[string]string{
+	affected, err := qb.Update(table, 3, map[string]string{
 		"name":  "Tea",
 		"price": "0.09",
 		"SKU":   "123-000-789",
@@ -118,24 +118,24 @@ func TestUpdate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if rowsAffected < 0 {
-		t.Errorf("unable to update data, got negative %d", rowsAffected)
+	if affected < 0 {
+		t.Errorf("unable to update data, got negative %d", affected)
 	}
 }
 
 func TestDelete(t *testing.T) {
-	queryBuilder := makeQueryBuilderMySQL()
+	qb := newQueryBuilderMySQL()
 
-	rowsAffected, err := queryBuilder.Delete("products", 3)
+	affected, err := qb.Delete(table, 3)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if rowsAffected < 0 {
-		t.Fatalf("unable to delete data, got negative %d", rowsAffected)
+	if affected < 0 {
+		t.Fatalf("unable to delete data, got negative %d", affected)
 	}
 
-	err = queryBuilder.AutoIncrement("products")
+	err = qb.AutoIncrement(table)
 	if err != nil {
 		t.Error(err)
 	}

@@ -5,7 +5,7 @@ import (
 	"github.com/oleksiivelychko/go-mysql-connection/querybuilder"
 )
 
-type Product struct {
+type product struct {
 	ID        int
 	Name      string
 	Price     float64
@@ -13,17 +13,17 @@ type Product struct {
 	UpdatedAt string
 }
 
-func makeQueryBuilderMySQL() *querybuilder.Builder {
-	conn, err := connection.New(&connection.Params{
-		Username:     "gouser",
-		Password:     "secret",
-		DatabaseName: "go_mysql_connection",
-		DriverName:   "mysql",
+func newQueryBuilderMySQL() *querybuilder.Builder {
+	c, err := connection.New(&connection.Params{
+		Username: "gopher",
+		Password: "secret",
+		Database: "go_mysql_connection",
+		Driver:   "mysql",
 	})
 
 	if err != nil {
 		panic(err)
 	}
 
-	return querybuilder.New(conn)
+	return querybuilder.New(c)
 }
