@@ -3,10 +3,10 @@ USE mysql;
 DROP DATABASE IF EXISTS go_mysql_connection;
 CREATE DATABASE go_mysql_connection;
 
-DROP USER IF EXISTS 'gouser'@'%';
-CREATE USER IF NOT EXISTS 'gouser'@'%';
-GRANT ALL PRIVILEGES ON go_mysql_connection.* TO 'gouser'@'%';
-ALTER USER 'gouser'@'%' IDENTIFIED WITH caching_sha2_password BY 'secret';
+DROP USER IF EXISTS 'gopher'@'%';
+CREATE USER IF NOT EXISTS 'gopher'@'%';
+GRANT ALL PRIVILEGES ON go_mysql_connection.* TO 'gopher'@'%';
+ALTER USER 'gopher'@'%' IDENTIFIED WITH caching_sha2_password BY 'secret';
 FLUSH PRIVILEGES;
 
 USE go_mysql_connection;
@@ -37,7 +37,7 @@ CREATE TRIGGER sku_check BEFORE INSERT ON products
 BEGIN
     IF (NEW.sku REGEXP '^([0-9]{3})+-([0-9]{3})+-([0-9]{3})$') = 0 THEN
         SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'SKU has wrong format!';
+            SET MESSAGE_TEXT = 'SKU has incorrect format!';
     END IF;
 END;
 |
