@@ -35,7 +35,7 @@ func (b *Builder) FindOne(table string, id uint) (*sql.Row, error) {
 func (b *Builder) Insert(table string, data map[string]string) (int64, error) {
 	columns, values := b.prepare(data, 0)
 
-	result, err := b.db().ExecContext(
+	res, err := b.db().ExecContext(
 		context.Background(),
 		fmt.Sprintf(
 			`INSERT INTO %s (%s) VALUES (%s)`,
@@ -50,13 +50,13 @@ func (b *Builder) Insert(table string, data map[string]string) (int64, error) {
 		return -1, err
 	}
 
-	return result.LastInsertId()
+	return res.LastInsertId()
 }
 
 func (b *Builder) Update(table string, id uint, data map[string]string) (int64, error) {
 	columns, values := b.prepare(data, id)
 
-	result, err := b.db().ExecContext(
+	res, err := b.db().ExecContext(
 		context.Background(),
 		fmt.Sprintf(`UPDATE %s SET %s WHERE id=?`, table, columns),
 		values...,
@@ -66,13 +66,13 @@ func (b *Builder) Update(table string, id uint, data map[string]string) (int64, 
 		return -1, err
 	}
 
-	return result.RowsAffected()
+	return res.RowsAffected()
 }
 
 func (b *Builder) Delete(table string, id uint) (int64, error) {
-	result, err := b.db().Exec(fmt.Sprintf(`DELETE FROM %s WHERE id=?`, table), id)
+	res, err := b.db().Exec(fmt.Sprintf(`DELETE FROM %s WHERE id=?`, table), id)
 	if err == nil {
-		return result.RowsAffected()
+		return res.RowsAffected()
 	}
 
 	return -1, fmt.Errorf("unable to delete from %s by id %d", table, id)
