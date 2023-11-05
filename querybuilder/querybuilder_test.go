@@ -13,6 +13,6 @@ func TestQueryBuilder_New(t *testing.T) {
 
 	qb := New(c)
 	if qb.db() == nil {
-		t.Error("unable to create query builder")
+		t.Error("unable to create")
 	}
 }
