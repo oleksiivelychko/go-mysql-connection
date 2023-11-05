@@ -14,10 +14,10 @@ func TestConnection_Successful(t *testing.T) {
 
 func TestConnection_Failed(t *testing.T) {
 	c, _ := New(&Params{Username: "", Password: "", Database: "", Driver: "mysql"})
-	ping := c.DB.Ping()
 
+	ping := c.DB.Ping()
 	if ping.Error() == "" {
-		t.Fatal("unable to ping connection")
+		t.Fatal("unable to ping")
 	}
 
 	t.Log(ping.Error())
@@ -25,6 +25,7 @@ func TestConnection_Failed(t *testing.T) {
 
 func TestConnection_Closed(t *testing.T) {
 	c, _ := New(&Params{Username: "test", Password: "test", Database: "test", Driver: "mysql"})
+
 	err := c.Close()
 	if err != nil {
 		t.Error(err.Error())
