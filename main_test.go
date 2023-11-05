@@ -7,10 +7,16 @@ import (
 	"time"
 )
 
-const table = "products"
+const (
+	username = "gopher"
+	password = "secret"
+	database = "go_mysql_connection"
+	driver   = "mysql"
+	table    = "products"
+)
 
 func TestFindAll(t *testing.T) {
-	qb := newQueryBuilderMySQL()
+	var qb = newQueryBuilderMySQL(username, password, database, driver)
 
 	rows, err := qb.FindAll(table)
 	if err != nil {
@@ -61,7 +67,7 @@ func TestFindAll(t *testing.T) {
 }
 
 func TestFindOne(t *testing.T) {
-	qb := newQueryBuilderMySQL()
+	var qb = newQueryBuilderMySQL(username, password, database, driver)
 
 	row, err := qb.FindOne(table, 1)
 	if err != nil {
@@ -88,7 +94,7 @@ func TestFindOne(t *testing.T) {
 }
 
 func TestInsert(t *testing.T) {
-	qb := newQueryBuilderMySQL()
+	var qb = newQueryBuilderMySQL("gopher", "secret", "go_mysql_connection", "mysql")
 
 	id, err := qb.Insert(table, map[string]string{
 		"name":  "Coffee",
@@ -101,12 +107,12 @@ func TestInsert(t *testing.T) {
 	}
 
 	if id < 0 {
-		t.Errorf("unable to insert data, got negative %d", id)
+		t.Errorf("expected positive, got %d", id)
 	}
 }
 
 func TestUpdate(t *testing.T) {
-	qb := newQueryBuilderMySQL()
+	var qb = newQueryBuilderMySQL(username, password, database, driver)
 
 	affected, err := qb.Update(table, 3, map[string]string{
 		"name":  "Tea",
@@ -119,12 +125,12 @@ func TestUpdate(t *testing.T) {
 	}
 
 	if affected < 0 {
-		t.Errorf("unable to update data, got negative %d", affected)
+		t.Errorf("expected positive, got %d", affected)
 	}
 }
 
 func TestDelete(t *testing.T) {
-	qb := newQueryBuilderMySQL()
+	var qb = newQueryBuilderMySQL(username, password, database, driver)
 
 	affected, err := qb.Delete(table, 3)
 	if err != nil {
@@ -132,7 +138,7 @@ func TestDelete(t *testing.T) {
 	}
 
 	if affected < 0 {
-		t.Fatalf("unable to delete data, got negative %d", affected)
+		t.Fatalf("expected positive, got %d", affected)
 	}
 
 	err = qb.AutoIncrement(table)

@@ -13,12 +13,12 @@ type product struct {
 	UpdatedAt string
 }
 
-func newQueryBuilderMySQL() *querybuilder.Builder {
+func newQueryBuilderMySQL(username, password, database, driver string) *querybuilder.Builder {
 	c, err := connection.New(&connection.Params{
-		Username: "gopher",
-		Password: "secret",
-		Database: "go_mysql_connection",
-		Driver:   "mysql",
+		Username: username,
+		Password: password,
+		Database: database,
+		Driver:   driver,
 	})
 
 	if err != nil {
