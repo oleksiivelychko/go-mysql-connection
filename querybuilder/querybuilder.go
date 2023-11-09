@@ -4,8 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/oleksiivelychko/go-mysql-connection/connection"
 	"strings"
+
+	"github.com/oleksiivelychko/go-mysql-connection/connection"
 )
 
 type Builder struct{ Connection *connection.Connection }
