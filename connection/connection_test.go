@@ -25,9 +25,7 @@ func TestConnection_Failed(t *testing.T) {
 
 func TestConnection_Closed(t *testing.T) {
 	c, _ := New(&Params{Username: "test", Password: "test", Database: "test", Driver: "mysql"})
-
-	err := c.Close()
-	if err != nil {
+	if err := c.Close(); err != nil {
 		t.Error(err.Error())
 	}
 }

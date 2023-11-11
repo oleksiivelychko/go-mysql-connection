@@ -11,8 +11,7 @@ func TestQueryBuilder_New(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	qb := New(c)
-	if qb.db() == nil {
+	if qb := New(c); qb.db() == nil {
 		t.Error("unable to create")
 	}
 }

@@ -43,8 +43,7 @@ func TestFindAll(t *testing.T) {
 	assert.Equal(t, products[0].SKU, "123-456-789")
 	assert.NotEmpty(t, products[0].UpdatedAt)
 
-	_, err = time.Parse(time.DateTime, products[0].UpdatedAt)
-	if err != nil {
+	if _, err = time.Parse(time.DateTime, products[0].UpdatedAt); err != nil {
 		t.Fatal(err)
 	}
 
@@ -54,8 +53,7 @@ func TestFindAll(t *testing.T) {
 	assert.Equal(t, products[1].SKU, "000-000-001")
 	assert.NotEmpty(t, products[1].UpdatedAt)
 
-	_, err = time.Parse(time.DateTime, products[1].UpdatedAt)
-	if err != nil {
+	if _, err = time.Parse(time.DateTime, products[1].UpdatedAt); err != nil {
 		t.Fatal(err)
 	}
 
@@ -88,8 +86,7 @@ func TestFindOne(t *testing.T) {
 	assert.Equal(t, p.SKU, "123-456-789")
 	assert.NotEmpty(t, p.UpdatedAt)
 
-	err = qb.Connection.Close()
-	if err != nil {
+	if err = qb.Connection.Close(); err != nil {
 		t.Error(err)
 	}
 }
@@ -142,8 +139,7 @@ func TestDelete(t *testing.T) {
 		t.Fatalf("expected positive, got %d", affected)
 	}
 
-	err = qb.AutoIncrement(table)
-	if err != nil {
+	if err = qb.AutoIncrement(table); err != nil {
 		t.Error(err)
 	}
 }
